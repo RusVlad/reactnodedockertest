@@ -1,0 +1,44 @@
+version: "3.6"
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile-dev
+    restart: always
+    volumes:
+      - "./api:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    ports:
+      - 3001:3001
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: react-node-app-database
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=ExpressTestDb
+    ports:
+      - "27017:27017"
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile-dev
+    restart: always
+    volumes:
+      - "./client:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - API_URL=http://localhost:3001
+    depends_on:
+      - api
