@@ -10,6 +10,9 @@ import registerRoute from "./routes/register";
 import loginRoute from "./routes/login";
 import logoutRoute from "./routes/logout";
 
+import Properties from "./models/properties";
+import properties from "./mockData";
+
 dotenv.config();
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
@@ -27,19 +30,23 @@ app.get("/", (req, res) => {
   res.send("Home");
 });
 
-const DB_NAME = "expressTestDb";
+const DB_NAME = "ExpressTestDb";
 
 mongoose.connect(
-  process.env.DB_CONNECTION,
+  process.env.MONGO_URI,
   {
     dbName: DB_NAME,
     useNewUrlParser: true,
     useFindAndModify: false,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   },
   () => {
     console.log("Connected");
   }
 );
+
+Properties.deleteMany({}, () => {
+  Properties.insertMany(properties);
+});
 
 app.listen(3001);

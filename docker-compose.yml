@@ -14,15 +14,18 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+      - MONGO_URI=mongodb://mymongodb:27017/ExpressTestDb
     depends_on:
       - mongo
 
   mongo:
     image: mongo
-    container_name: react-node-app-database
+    container_name: mymongodb
     restart: always
     environment:
       - MONGO_INITDB_DATABASE=ExpressTestDb
+    volumes:
+      - mongodata:/data/db
     ports:
       - "27017:27017"
 
@@ -42,3 +45,5 @@ services:
       - API_URL=http://localhost:3001
     depends_on:
       - api
+volumes:
+  mongodata:

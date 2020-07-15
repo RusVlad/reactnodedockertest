@@ -4,25 +4,25 @@ const PropertiesSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
-    min: 1,
+    min: 1
   },
   description: String,
   sold_price: {
     type: Number,
-    required: true,
+    required: true
   },
   currency: {
     type: String,
-    default: "USD",
+    default: "USD"
   },
   date: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   images: {
     type: Array,
     contentType: String,
-    required: false,
+    required: false
   },
   location: {
     type: Object,
